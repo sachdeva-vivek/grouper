@@ -8,12 +8,12 @@ package edu.internet2.middleware.grouperClient.messaging;
 /**
  *
  */
-public class GrouperMessageProcessedResult {
+public class GrouperMessageAcknowledgeResult {
 
   /**
    * 
    */
-  public GrouperMessageProcessedResult() {
+  public GrouperMessageAcknowledgeResult() {
   }
 
 }

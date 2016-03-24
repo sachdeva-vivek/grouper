@@ -12,14 +12,40 @@ import edu.internet2.middleware.grouperClient.util.GrouperClientUtils;
 
 
 /**
- * param to mark a message as processed
+ * param to mark a message as processed or return to queue or whatever
  */
-public class GrouperMessageProcessedParam {
+public class GrouperMessageAcknowledgeParam {
 
   /**
    * describes the queue or topic
    */
   private GrouperMessageQueueParam grouperMessageQueueParam;
+
+  /**
+   * describes the queue or topic to send this one to
+   */
+  private GrouperMessageQueueParam grouperMessageAnotherQueueParam;
+
+  /**
+   * another queue or topic to send this message to
+   * @param anotherQueueParam
+   * @return this for chaining
+   */
+  public GrouperMessageAcknowledgeParam assignAnotherQueueParam(GrouperMessageQueueParam anotherQueueParam) {
+    this.grouperMessageAnotherQueueParam = anotherQueueParam;
+    return this;
+  }
+
+  /**
+   * another queue or topic to send this message to
+   * @return the grouperMessageAnotherQueueParam
+   */
+  public GrouperMessageQueueParam getGrouperMessageAnotherQueueParam() {
+    return this.grouperMessageAnotherQueueParam;
+  }
+
+
+
   /**
    * message body for the message
    */
@@ -30,9 +56,34 @@ public class GrouperMessageProcessedParam {
   private GrouperMessageSystemParam grouperMessageSystemParam;
 
   /**
+   * acknowledgeType
+   */
+  private GrouperMessageAcknowledgeType acknowledgeType;
+
+  /**
+   * type of acknowledgement
+   * @param grouperMessageAcknowledgeType
+   * @return this for chaining
+   */
+  public GrouperMessageAcknowledgeParam assignAcknowledgeType(GrouperMessageAcknowledgeType grouperMessageAcknowledgeType) {
+    this.acknowledgeType = grouperMessageAcknowledgeType;
+    return this;
+  }
+  
+  /**
+   * acknowledgeType
+   * @return the acknowledgeType
+   */
+  public GrouperMessageAcknowledgeType getAcknowledgeType() {
+    return this.acknowledgeType;
+  }
+
+
+
+  /**
    * 
    */
-  public GrouperMessageProcessedParam() {
+  public GrouperMessageAcknowledgeParam() {
   }
 
   /**
@@ -40,7 +91,7 @@ public class GrouperMessageProcessedParam {
    * @param theGrouperMessage
    * @return this for chaining
    */
-  public GrouperMessageProcessedParam addGrouperMessage(GrouperMessage theGrouperMessage) {
+  public GrouperMessageAcknowledgeParam addGrouperMessage(GrouperMessage theGrouperMessage) {
     this.grouperMessages.add(theGrouperMessage);
     return this;
   }
@@ -50,7 +101,7 @@ public class GrouperMessageProcessedParam {
    * @param theGrouperMessageSystemName
    * @return this for chaining
    */
-  public GrouperMessageProcessedParam assignGropuerMessageSystemName(String theGrouperMessageSystemName) {
+  public GrouperMessageAcknowledgeParam assignGropuerMessageSystemName(String theGrouperMessageSystemName) {
     if (this.grouperMessageSystemParam == null) {
       this.grouperMessageSystemParam = new GrouperMessageSystemParam();
     }
@@ -63,7 +114,7 @@ public class GrouperMessageProcessedParam {
    * @param theGrouperMessageQueueParam
    * @return this for chaining
    */
-  public GrouperMessageProcessedParam assignGrouperMessageQueueParam(GrouperMessageQueueParam theGrouperMessageQueueParam) {
+  public GrouperMessageAcknowledgeParam assignGrouperMessageQueueParam(GrouperMessageQueueParam theGrouperMessageQueueParam) {
     this.grouperMessageQueueParam = theGrouperMessageQueueParam;
     return this;
   }
@@ -73,7 +124,7 @@ public class GrouperMessageProcessedParam {
    * @param theGrouperMessages
    * @return this for chaining
    */
-  public GrouperMessageProcessedParam assignGrouperMessages(Collection<GrouperMessage> theGrouperMessages) {
+  public GrouperMessageAcknowledgeParam assignGrouperMessages(Collection<GrouperMessage> theGrouperMessages) {
     
     this.grouperMessages.clear();
     for (GrouperMessage theMessage : GrouperClientUtils.nonNull(theGrouperMessages)) {
@@ -87,7 +138,7 @@ public class GrouperMessageProcessedParam {
    * @param theGrouperMessageSystemParam
    * @return this for chaining
    */
-  public GrouperMessageProcessedParam assignGrouperMessageSystemParam(GrouperMessageSystemParam theGrouperMessageSystemParam) {
+  public GrouperMessageAcknowledgeParam assignGrouperMessageSystemParam(GrouperMessageSystemParam theGrouperMessageSystemParam) {
     this.grouperMessageSystemParam = theGrouperMessageSystemParam;
     return this;
   }
@@ -97,7 +148,7 @@ public class GrouperMessageProcessedParam {
    * @param theQueue
    * @return this for chaining
    */
-  public GrouperMessageProcessedParam assignQueue(String theQueue) {
+  public GrouperMessageAcknowledgeParam assignQueue(String theQueue) {
     if (this.grouperMessageQueueParam == null) {
       this.grouperMessageQueueParam = new GrouperMessageQueueParam();
     }
