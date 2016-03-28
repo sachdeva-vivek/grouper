@@ -26,6 +26,7 @@ import edu.internet2.middleware.grouper.changeLog.ChangeLogEntry;
 import edu.internet2.middleware.grouper.changeLog.ChangeLogLabels;
 import edu.internet2.middleware.grouper.changeLog.ChangeLogProcessorMetadata;
 import edu.internet2.middleware.grouper.changeLog.ChangeLogTypeBuiltin;
+import edu.internet2.middleware.grouper.util.GrouperUtil;
 
 
 /**
@@ -44,7 +45,7 @@ public class PrintTest extends ChangeLogConsumerBase {
 
     //try catch so we can track that we made some progress
     try {
-      for (ChangeLogEntry changeLogEntry : changeLogEntryList) {
+      for (ChangeLogEntry changeLogEntry : GrouperUtil.nonNull(changeLogEntryList)) {
         currentId = changeLogEntry.getSequenceNumber();
         
         //if this is a group add action and category
@@ -53,16 +54,12 @@ public class PrintTest extends ChangeLogConsumerBase {
           //print the name from the entry
           System.out.println("Group add, name: " 
               + changeLogEntry.retrieveValueForLabel(ChangeLogLabels.GROUP_ADD.name));
-        }
-        
-        if (changeLogEntry.equalsCategoryAndAction(ChangeLogTypeBuiltin.GROUP_DELETE)) {
+        } else if (changeLogEntry.equalsCategoryAndAction(ChangeLogTypeBuiltin.GROUP_DELETE)) {
           
           //print the name from the entry
           System.out.println("Group delete, name: " 
               + changeLogEntry.retrieveValueForLabel(ChangeLogLabels.GROUP_DELETE.name));
-        }
-        
-        if (changeLogEntry.equalsCategoryAndAction(ChangeLogTypeBuiltin.GROUP_UPDATE)) {
+        } else if (changeLogEntry.equalsCategoryAndAction(ChangeLogTypeBuiltin.GROUP_UPDATE)) {
           
           //print the name from the entry
           System.out.println("Group update, name: " 
@@ -70,6 +67,10 @@ public class PrintTest extends ChangeLogConsumerBase {
               + ", property: " + changeLogEntry.retrieveValueForLabel(ChangeLogLabels.GROUP_UPDATE.propertyChanged)
               + ", from: '" + changeLogEntry.retrieveValueForLabel(ChangeLogLabels.GROUP_UPDATE.propertyOldValue)
               + "', to: '" + changeLogEntry.retrieveValueForLabel(ChangeLogLabels.GROUP_UPDATE.propertyNewValue) + "'");
+        } else {
+          System.out.println("Change log entry: " + changeLogEntry.getChangeLogType().getChangeLogCategory() +
+              " -> " + changeLogEntry.getChangeLogType().getActionName() + ", " + changeLogEntry.getSequenceNumber());
+
         }
         
         //we successfully processed this record
